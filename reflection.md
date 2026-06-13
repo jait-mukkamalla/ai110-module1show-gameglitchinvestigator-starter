@@ -11,7 +11,7 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 - List at least two concrete bugs you noticed at the start  
   (for example: "the hints were backwards").
   
-  I noticed at least 7 bugs while looking through and testing the game:
+  I noticed at 8 bugs while looking through and testing the game:
   1. The number of user guess attempts started at 1 instead of zero, and it was also not updating at more guesses were made.
   2. The hints given were in the wrong direction every time.
   3. The score attribute for each game played did not really make any sense.
@@ -19,16 +19,22 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
   5. The history transferred from game to game, possibly as a result of the aforementioned error (#6)
   6. The number of guesses allowed in a game of ___ difficulty did not align with name of the difficulty. (ie. normal difficulty got 8 guesses but easy only got 6 guesses)
   7. Same as error #7, but this time with the range of possible numbers that can be guessed. (ie. normal mode had a smaller range of numbers compared to hard difficulty, but it should be the other way around)
+  8. Problem with the secret number not remaining the same throughout the game.
 
 **Bug Reproduction Log**
 
 Document at least 3 bugs you found. Add rows as needed.
 
-| Input | Expected Behavior | Actual Behavior | Console Output / Error |
-|-------|-------------------|-----------------|------------------------|
-| | | | |
-| | | | |
-| | | | |
+|   Input   | Expected Behavior |  Actual Behavior  | Console Output / Error |
+|-----------|-------------------|-------------------|------------------------|
+| None      | Attempts = 0      | Attempts = 1      | N/A                    |
+| 60        | Hint: too high    | Hint: too low     | N/A                    |
+| 89        | Score: (pos. num) | Score: -10        | N/A                    |
+| New game  | Start new game    | Nothing happened  | When attempting a guess: says game already won, start new game|
+| New game  | History is empty  | Old history stays | N/A                    |
+| Easy mode | 8 guesses allowed | 6 guesses allowed | N/A                    |
+| Hard mode | Num range 0-100   | Num range 1-50    | N/A                    |
+| 32        | Secret num is 32  | Secret num is 86  | N/A                    |
 
 ---
 
