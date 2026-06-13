@@ -2,6 +2,7 @@ import random
 import streamlit as st
 from logic_utils import check_guess, update_score
 
+#FIXME: Need to refactor and fix number ranges to make more sense
 def get_range_for_difficulty(difficulty: str):
     if difficulty == "Easy":
         return 1, 20
@@ -11,7 +12,7 @@ def get_range_for_difficulty(difficulty: str):
         return 1, 50
     return 1, 100
 
-
+#FIXME: Need to refactor and add better handling of non-integer inputs
 def parse_guess(raw: str):
     if raw is None:
         return False, None, "Enter a guess."
@@ -43,6 +44,7 @@ difficulty = st.sidebar.selectbox(
     index=1,
 )
 
+#FIXME: Need to make the attempt limits for each difficulty make more sense
 attempt_limit_map = {
     "Easy": 6,
     "Normal": 8,
@@ -73,6 +75,7 @@ if "history" not in st.session_state:
 
 st.subheader("Make a guess")
 
+#FIXME: Need to guess between low and high instead of 1 and 100 always
 st.info(
     f"Guess a number between 1 and 100. "
     f"Attempts left: {attempt_limit - st.session_state.attempts}"
@@ -98,10 +101,13 @@ with col2:
 with col3:
     show_hint = st.checkbox("Show hint", value=True)
 
+#FIX: Reset all session state fields on new game so status returns to "playing" and secret uses the correct difficulty range
 if new_game:
     st.session_state.attempts = 0
-    st.session_state.secret = random.randint(1, 100)
-    st.success("New game started.")
+    st.session_state.score = 100
+    st.session_state.status = "playing"
+    st.session_state.history = []
+    st.session_state.secret = random.randint(low, high)
     st.rerun()
 
 if st.session_state.status != "playing":

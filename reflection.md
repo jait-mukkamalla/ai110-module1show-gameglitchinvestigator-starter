@@ -19,7 +19,7 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
   5. The history transferred from game to game, possibly as a result of the aforementioned error (#4)
   6. The number of guesses allowed in a game of ___ difficulty did not align with name of the difficulty. (ie. normal difficulty got 8 guesses but easy only got 6 guesses)
   7. Same as error #7, but this time with the range of possible numbers that can be guessed. (ie. normal mode had a smaller range of numbers compared to hard difficulty, but it should be the other way around)
-  8. Problem with the secret number not remaining the same throughout the game.
+  8. Problem with the secret number not being within the number range of the selected difficulty.
 
 **Bug Reproduction Log**
 
