@@ -3,7 +3,7 @@ import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from logic_utils import check_guess, update_score
+from logic_utils import check_guess, update_score, get_range_for_difficulty, parse_guess
 
 # --- Bug fix: hint messages were swapped ---
 
@@ -86,3 +86,52 @@ def test_win_minimum_points():
     # Very late win should give at least 10 points, never go negative bonus
     score = update_score(0, "Win", 15)
     assert score == 10, f"Expected minimum 10 bonus points, got: {score}"
+
+# --- Refactor: get_range_for_difficulty moved to logic_utils with corrected ranges ---
+
+def test_easy_range():
+    assert get_range_for_difficulty("Easy") == (1, 20)
+
+def test_normal_range():
+    assert get_range_for_difficulty("Normal") == (1, 50)
+
+def test_hard_range():
+    assert get_range_for_difficulty("Hard") == (1, 100)
+
+def test_hard_range_larger_than_normal():
+    _, hard_high = get_range_for_difficulty("Hard")
+    _, normal_high = get_range_for_difficulty("Normal")
+    assert hard_high > normal_high
+
+def test_unknown_difficulty_defaults():
+    assert get_range_for_difficulty("Unknown") == (1, 50)
+
+# --- Refactor: parse_guess moved to logic_utils with improved input handling ---
+
+def test_parse_valid_integer():
+    ok, value, err = parse_guess("42")
+    assert ok is True and value == 42 and err is None
+
+def test_parse_strips_whitespace():
+    ok, value, _ = parse_guess("  7  ")
+    assert ok is True and value == 7
+
+def test_parse_empty_string():
+    ok, _, err = parse_guess("")
+    assert ok is False and "guess" in err.lower()
+
+def test_parse_none():
+    ok, _, err = parse_guess(None)
+    assert ok is False and err is not None
+
+def test_parse_whitespace_only():
+    ok, _, _ = parse_guess("   ")
+    assert ok is False
+
+def test_parse_decimal_is_rejected():
+    ok, _, err = parse_guess("3.9")
+    assert ok is False and "decimal" in err.lower(), f"Expected decimal error, got: {err}"
+
+def test_parse_non_numeric_string():
+    ok, _, err = parse_guess("abc")
+    assert ok is False and err == "That is not a number."

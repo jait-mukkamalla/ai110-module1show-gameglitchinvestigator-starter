@@ -1,34 +1,6 @@
 import random
 import streamlit as st
-from logic_utils import check_guess, update_score
-
-#FIXME: Need to refactor and fix number ranges to make more sense
-def get_range_for_difficulty(difficulty: str):
-    if difficulty == "Easy":
-        return 1, 20
-    if difficulty == "Normal":
-        return 1, 100
-    if difficulty == "Hard":
-        return 1, 50
-    return 1, 100
-
-#FIXME: Need to refactor and add better handling of non-integer inputs
-def parse_guess(raw: str):
-    if raw is None:
-        return False, None, "Enter a guess."
-
-    if raw == "":
-        return False, None, "Enter a guess."
-
-    try:
-        if "." in raw:
-            value = int(float(raw))
-        else:
-            value = int(raw)
-    except Exception:
-        return False, None, "That is not a number."
-
-    return True, value, None
+from logic_utils import check_guess, update_score, get_range_for_difficulty, parse_guess
 
 
 st.set_page_config(page_title="Glitchy Guesser", page_icon="🎮")
@@ -44,10 +16,10 @@ difficulty = st.sidebar.selectbox(
     index=1,
 )
 
-#FIXME: Need to make the attempt limits for each difficulty make more sense
+#FIX: Fixed attempt limits for each difficulty to make more sense
 attempt_limit_map = {
-    "Easy": 6,
-    "Normal": 8,
+    "Easy": 10,
+    "Normal": 7,
     "Hard": 5,
 }
 attempt_limit = attempt_limit_map[difficulty]
@@ -56,6 +28,19 @@ low, high = get_range_for_difficulty(difficulty)
 
 st.sidebar.caption(f"Range: {low} to {high}")
 st.sidebar.caption(f"Attempts allowed: {attempt_limit}")
+
+#FIX: Added logic to reset the game state when difficulty changes, so the secret number and attempts are consistent with the selected difficulty using agent mode.
+if "difficulty_key" not in st.session_state:
+    st.session_state.difficulty_key = difficulty
+
+if st.session_state.difficulty_key != difficulty:
+    st.session_state.difficulty_key = difficulty
+    st.session_state.secret = random.randint(low, high)
+    st.session_state.attempts = 0
+    st.session_state.score = 100
+    st.session_state.status = "playing"
+    st.session_state.history = []
+    st.rerun()
 
 if "secret" not in st.session_state:
     st.session_state.secret = random.randint(low, high)
@@ -75,9 +60,9 @@ if "history" not in st.session_state:
 
 st.subheader("Make a guess")
 
-#FIXME: Need to guess between low and high instead of 1 and 100 always
+#FIX: Updated the info message to show the correct range for the selected difficulty
 st.info(
-    f"Guess a number between 1 and 100. "
+    f"Guess a number between {low} and {high}. "
     f"Attempts left: {attempt_limit - st.session_state.attempts}"
 )
 
@@ -117,15 +102,14 @@ if st.session_state.status != "playing":
         st.error("Game over. Start a new game to try again.")
     st.stop()
 
+#FIX: Calling parse_guess before updating the attempts and history, so that invalid input doesn't consume an attempt or get added to history, and ensuring the score updates correctly based on the outcome of valid guesses using agent mode.
 if submit:
-    st.session_state.attempts += 1
-
     ok, guess_int, err = parse_guess(raw_guess)
 
     if not ok:
-        st.session_state.history.append(raw_guess)
         st.error(err)
     else:
+        st.session_state.attempts += 1
         st.session_state.history.append(guess_int)
 
         #FIX: Removed string conversion on even guesses that caused lexicographic comparision using agent mode
