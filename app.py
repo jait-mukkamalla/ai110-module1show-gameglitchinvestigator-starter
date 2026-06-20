@@ -66,24 +66,14 @@ st.info(
     f"Attempts left: {attempt_limit - st.session_state.attempts}"
 )
 
-with st.expander("Developer Debug Info"):
-    st.write("Secret:", st.session_state.secret)
-    st.write("Attempts:", st.session_state.attempts)
-    st.write("Score:", st.session_state.score)
-    st.write("Difficulty:", difficulty)
-    st.write("History:", st.session_state.history)
+with st.form("guess_form", clear_on_submit=True):
+    raw_guess = st.text_input("Enter your guess:")
+    submit = st.form_submit_button("Submit Guess 🚀")
 
-raw_guess = st.text_input(
-    "Enter your guess:",
-    key=f"guess_input_{difficulty}"
-)
-
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 with col1:
-    submit = st.button("Submit Guess 🚀")
-with col2:
     new_game = st.button("New Game 🔁")
-with col3:
+with col2:
     show_hint = st.checkbox("Show hint", value=True)
 
 #FIX: Reset all session state fields on new game so status returns to "playing" and secret uses the correct difficulty range
@@ -141,4 +131,12 @@ if submit:
                 )
 
 st.divider()
+
+with st.expander("Developer Debug Info"):
+    st.write("Secret:", st.session_state.secret)
+    st.write("Attempts:", st.session_state.attempts)
+    st.write("Score:", st.session_state.score)
+    st.write("Difficulty:", difficulty)
+    st.write("History:", st.session_state.history)
+
 st.caption("Built by an AI that claims this code is production-ready.")
