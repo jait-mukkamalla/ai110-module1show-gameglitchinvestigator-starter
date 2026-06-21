@@ -77,11 +77,22 @@ Document at least 3 bugs you found. Add rows as needed.
 
 - How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
 
+  Streamlit "reruns" every time the code reaches the bottom of the file as it is a linear execution engine. Session state is a way to maintain information across of multiple "reruns" of the code script(s), like score, guess attempts, and the secret number in our case. It also isolates data to ensure that each open browser tab gets its own separate session data; this allows for multiple users to use the streamlit application without overwriting anyone else's data. If you want to reset the session state, you need to refresh your browser tab.
+
 ---
 
 ## 5. Looking ahead: your developer habits
 
 - What is one habit or strategy from this project that you want to reuse in future labs or projects?
   - This could be a testing habit, a prompting strategy, or a way you used Git.
+
+  I really felt comfortable working using AI to identify the locations of bugs, working to identify the best possible fixes, and evaluate the suggested code from the AI for correctness.
+  I also liked the way I used git to update my fixes/changes periodically to ensure that each fix corrected a few issues instead of commiting a bunch of changes at once.
+
 - What is one thing you would do differently next time you work with AI on a coding task?
+
+  I felt like the test cases created by the AI were good, but I did not provide as much input as I feel like I should have. I want to keep myself in the loop more often so I know what the Ai is going to create/code.
+
 - In one or two sentences, describe how this project changed the way you think about AI generated code.
+
+  AI is very capable of writing code, but it needs guidance with regards to implementation of features, edge cases to test, and identifying problems in the codebase. Often times, I felt like the AI was overcomplicating things or not making all necesaary changes for a feature fix or implementation. 
