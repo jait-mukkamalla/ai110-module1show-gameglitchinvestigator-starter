@@ -94,7 +94,7 @@ if st.session_state.status != "playing":
 
 #FIX: Calling parse_guess before updating the attempts and history, so that invalid input doesn't consume an attempt or get added to history, and ensuring the score updates correctly based on the outcome of valid guesses using agent mode.
 if submit:
-    ok, guess_int, err = parse_guess(raw_guess)
+    ok, guess_int, err = parse_guess(raw_guess, low, high)
 
     if not ok:
         st.error(err)

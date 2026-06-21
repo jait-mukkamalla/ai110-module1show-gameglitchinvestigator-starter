@@ -11,7 +11,7 @@ def get_range_for_difficulty(difficulty: str):
 
 
 #FIX: Refactored the function from app.py into this file and improved the parsing logic to handle empty input, decimals, and non-numeric strings more gracefully using agent mode.
-def parse_guess(raw: str):
+def parse_guess(raw: str, low: int = 1, high: int = 100):
     """
     Parse user input into an int guess.
 
@@ -29,6 +29,9 @@ def parse_guess(raw: str):
         value = int(raw)
     except ValueError:
         return False, None, "That is not a number."
+
+    if value < low or value > high:
+        return False, None, f"Enter a number between {low} and {high}."
 
     return True, value, None
 
