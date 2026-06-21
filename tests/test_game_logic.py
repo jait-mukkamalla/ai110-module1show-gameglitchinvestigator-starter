@@ -135,3 +135,29 @@ def test_parse_decimal_is_rejected():
 def test_parse_non_numeric_string():
     ok, _, err = parse_guess("abc")
     assert ok is False and err == "That is not a number."
+
+# EDGE CASES BELOW WRITTEN FOR CHALLENGE #1
+
+def test_parse_letters_then_numbers_is_rejected():
+    ok, _, err = parse_guess("abc12")
+    assert ok is False and err == "That is not a number."
+
+def test_parse_numbers_then_letters_is_rejected():
+    ok, _, err = parse_guess("12abc")
+    assert ok is False and err == "That is not a number."
+
+def test_parse_negative_number_is_rejected():
+    ok, _, err = parse_guess("-5")
+    assert ok is False and err is not None
+
+def test_parse_zero_is_rejected():
+    ok, _, err = parse_guess("0")
+    assert ok is False and err is not None
+
+def test_parse_just_over_max_is_rejected():
+    ok, _, err = parse_guess("101")
+    assert ok is False and err is not None
+
+def test_parse_very_large_number_is_rejected():
+    ok, _, err = parse_guess("999999999999")
+    assert ok is False and err is not None

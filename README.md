@@ -44,9 +44,9 @@ Describe your fixed game in numbered steps so a reader can follow along without 
 ## 🧪 Test Results
 
 ```
-# Paste your pytest output here, e.g.:
-# pytest tests/
-# ========================= X passed in 0.XXs =========================
+tests\test_game_logic.py ...................                    [100%]
+
+========================= 32 passed in 0.09s =========================
 ```
 
 ## 🚀 Stretch Features
